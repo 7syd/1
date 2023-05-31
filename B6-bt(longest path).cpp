@@ -1,5 +1,4 @@
 #include <iostream>
-#include <cstddef>
 using namespace std;
 
 struct Node {
@@ -28,18 +27,18 @@ private:
         return node;
     }
 
-    void displayTree(Node* node, std::string indent, bool last) {
+    void displayTree(Node* node, string indent, bool last) {
         if (node != NULL) {
-            std::cout << indent;
+            cout << indent;
             if (last) {
-                std::cout << "+-";
+                cout << "+-";
                 indent += "  ";
             } else {
-                std::cout << "+-";
+                cout << "+-";
                 indent += "| ";
             }
 
-            std::cout << node->value << std::endl;
+            cout << node->value << endl;
 
             displayTree(node->left, indent, false);
             displayTree(node->right, indent, true);
@@ -54,7 +53,7 @@ private:
         int leftHeight = getHeight(node->left);
         int rightHeight = getHeight(node->right);
 
-        return 1 + std::max(leftHeight, rightHeight);
+        return 1 + max(leftHeight, rightHeight);
     }
 
 public:
@@ -76,22 +75,21 @@ public:
 int main() {
     BST bst;
     int numValues;
-    std::cout << "Enter the number of values to insert: ";
-    std::cin >> numValues;
+    cout << "Enter the number of values to insert: ";
+    cin >> numValues;
 
-    std::cout << "Enter the values: ";
+    cout << "Enter the values: ";
     for (int i = 0; i < numValues; i++) {
         int value;
-        std::cin >> value;
+        cin >> value;
         bst.insert(value);
     }
 
-    std::cout << "Binary Search Tree:" << std::endl;
+    cout << "Binary Search Tree:" << endl;
     bst.display();
 
     int longestPathLength = bst.getLongestPathLength();
-    std::cout << "\nNumber of nodes in the longest path from the root: " << longestPathLength << std::endl;
+    cout << "\nNumber of nodes in the longest path from the root: " << longestPathLength << endl;
 
     return 0;
 }
-
