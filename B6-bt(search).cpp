@@ -1,5 +1,4 @@
 #include <iostream>
-#include <cstddef>
 using namespace std;
 
 struct Node {
@@ -30,7 +29,7 @@ private:
 
     void displayTree(Node* node, string indent, bool last) {
         if (node != NULL) {
-            std::cout << indent;
+            cout << indent;
             if (last) {
                 cout << "+-";
                 indent += "  ";
@@ -104,4 +103,3 @@ int main() {
 
     return 0;
 }
-
