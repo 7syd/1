@@ -1,5 +1,4 @@
 #include <iostream>
-#include <cstddef>
 using namespace std;
 
 struct Node {
@@ -100,4 +99,3 @@ int main() {
 
     return 0;
 }
-
