@@ -1,133 +1,65 @@
 #include<iostream>
 using namespace std;
-#define MAX 10
-
 class Heap
 {
-	private:
-		int Marks[MAX];
-		int n;
-	
+	int n;
+	int *minheap,*maxheap;
 	public:
-		Heap();
-		void insert(int num);
-		void makeheap();
-		void heapsort();
-		void display();
-		void display_max_min_marks();
+	void get();
+	void displayMin(){cout<<"Minimum marks are :"<<minheap[0]<<endl;}
+	void displayMax(){cout<<"Maximum marks are :"<<maxheap[0]<<endl;}
+	void upAdjust(bool,int);
 };
-
-Heap::Heap()
+void Heap::get()
 {
-	n=0;
-	for(int i=0;i<MAX;i++)
+	cout<<"Enter number of subjects."<<endl;
+	cin>>n;
+	int k;
+	minheap=new int[n];
+	maxheap=new int[n];
+	cout<<"Enter marks of each subject."<<endl;
+	for(int i=0;i<n;i++)
 	{
-		Marks[i]=0;
+		cin>>k;
+		minheap[i]=k;
+		upAdjust(0,i);
+		maxheap[i]=k;
+		upAdjust(1,i);
 	}
 }
-
-void Heap::insert(int num)
+void Heap::upAdjust(bool m,int l)
 {
-	if(n<MAX)
+	int s;
+	if(!m)
 	{
-		Marks[n]=num;
-		n++;
+		while(minheap[(l-1)/2]>minheap[l])
+		{
+			s=minheap[l];
+			minheap[l]=minheap[(l-1)/2];
+			minheap[(l-1)/2]=s;
+			l=(l-1)/2;
+			if(l==-1)
+				break;
+		}
 	}
 	else
 	{
-		cout<<"\n Array is Full";
+		while(maxheap[(l-1)/2]<maxheap[l])
+		{
+			s=maxheap[l];
+			maxheap[l]=maxheap[(l-1)/2];
+			maxheap[(l-1)/2]=s;
+			l=(l-1)/2;
+			if(l==-1)
+				break;
+		}
 	}
 }
-
-void Heap::makeheap()
-{
-	for(int i=1;i<n;i++)
-	{
-		int val=Marks[i];
-		int j=i;
-		int f=(j-1)/2;
-		while (j>0 && Marks[f]<val)
-		{
-			Marks[j]=Marks[f];
-			j=f;
-			f=(j-1)/2;
-		}
-		Marks[j]=val;
-	}
-}
-
-void Heap::heapsort()
-{
-	for(int i=n-1;i>0;i--)
-	{
-		int temp=Marks[i];
-		Marks[i]=Marks[0];
-		int k=0;
-		int j;
-		if(i==1)
-		{
-			j=-1;
-		}
-		else
-		{
-			j=1;
-		}
-		if(i>2 && Marks[2]>Marks[1])
-		{
-			j=2;
-		}
-		while(j>=0 && temp<Marks[j])
-		{
-			Marks[k]=Marks[j];
-			k=j;
-			j=2*k+1;
-			if(j+1<=i-1&&Marks[j]<Marks[j+1])
-			{
-				j++;
-			}
-			if(j>i-1)
-			{
-				j=-1;
-			}
-		}
-		Marks[k]=temp;
-	}
-}
-
-void Heap::display()
-{
-	for(int i=0;i<n;i++)
-	{
-		cout<<" "<<Marks[i];
-	}
-	cout<<"\n";
-}
-
-void Heap::display_max_min_marks()
-{
-	cout<<"\n The Maximum marks = "<<Marks[n-1];
-	cout<<"\n The Minimum marks = "<<Marks[0];
-	cout<<"\n";
-}
-
 int main()
 {
-	Heap obj;
-	obj.insert(55);
-	obj.insert(48);
-	obj.insert(89);
-	obj.insert(91);
-	obj.insert(75);
-	obj.insert(63);
-	obj.insert(45);
-	obj.insert(78);
-	
-	cout<<"\n Following Marks are obtained by Students : "<<endl;
-	obj.display();
-	obj.makeheap();
-	
-	cout<<"\n\n Heapified..."<<endl;
-	
-	obj.heapsort();
-	obj.display_max_min_marks();
+	Heap H;
+	H.get();
+	H.displayMin();
+	H.displayMax();
+	return(0);
 }
