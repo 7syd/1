@@ -1,5 +1,4 @@
 #include <iostream>
-#include <cstddef>
 using namespace std;
 
 struct Node {
@@ -32,10 +31,10 @@ private:
         if (node != NULL) {
             cout << indent;
             if (last) {
-                std::cout << "+-";
+                cout << "+-";
                 indent += "  ";
             } else {
-                std::cout << "+-";
+                cout << "+-";
                 indent += "| ";
             }
 
@@ -85,4 +84,3 @@ int main() {
 
     return 0;
 }
-
