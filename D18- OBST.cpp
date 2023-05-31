@@ -1,65 +1,76 @@
 #include <iostream>
-#include <vector>
-#include <limits>
-
 using namespace std;
+struct Node {
+    int key;
+    float searchProbability;
+    Node* left;
+    Node* right;
+};
 
-// Function to calculate the optimal cost of a binary search tree
-float optimalBST(const vector<float>& keys, const vector<float>& probabilities) {
-    int n = keys.size();
+Node* createNode(int key, float searchProbability) {
+    Node* newNode = new Node();
+    newNode->key = key;
+    newNode->searchProbability = searchProbability;
+    newNode->left = newNode->right = NULL;
+    return newNode;
+}
 
-    // Create a 2D table to store the optimal cost
-    vector<vector<float> > cost(n + 1, vector<float>(n + 1, 0));
-
-    // Fill the diagonal values with the individual probabilities
-    for (int i = 0; i < n; i++)
-        cost[i][i] = probabilities[i];
-
-    // Build the table in a bottom-up manner
-    for (int L = 2; L <= n; L++) {
-        for (int i = 0; i <= n - L + 1; i++) {
-            int j = i + L - 1;
-            cost[i][j] = numeric_limits<float>::max();
-
-            // Calculate the sum of probabilities between keys[i] and keys[j]
-            float sum = 0;
-            for (int k = i; k <= j; k++)
-                sum += probabilities[k];
-
-            // Try all possible roots from keys[i] to keys[j]
-            for (int r = i; r <= j; r++) {
-                float c = ((r > i) ? cost[i][r - 1] : 0) + ((r < j) ? cost[r + 1][j] : 0) + sum;
-                if (c < cost[i][j])
-                    cost[i][j] = c;
-            }
-        }
+Node* insertNode(Node* root, int key, float searchProbability) {
+    if (root == NULL) {
+        return createNode(key, searchProbability);
     }
+    if (key < root->key) {
+        root->left = insertNode(root->left, key, searchProbability);
+    } else if (key > root->key) {
+        root->right = insertNode(root->right, key, searchProbability);
+    }
+    return root;
+}
 
-    // Return the optimal cost of the binary search tree
-    return cost[0][n - 1];
+float calculateSearchCost(Node* root) {
+    if (root == NULL) {
+        return 0.0;
+    }
+    float leftCost = calculateSearchCost(root->left);
+    float rightCost = calculateSearchCost(root->right);
+    return root->searchProbability + leftCost + rightCost;
+}
+
+Node* buildBST(int keys[], float probabilities[], int n) {
+    Node* root = NULL;
+    for (int i = 0; i < n; i++) {
+        root = insertNode(root, keys[i], probabilities[i]);
+    }
+    return root;
+}
+
+void deleteBST(Node* root) {
+    if (root == NULL) {
+        return;
+    }
+    deleteBST(root->left);
+    deleteBST(root->right);
+    delete root;
 }
 
 int main() {
     int n;
     cout << "Enter the number of keys: ";
     cin >> n;
-
-    vector<float> keys(n);
-    vector<float> probabilities(n);
-
-    cout << "Enter the keys in sorted order:\n";
+    int keys[n];
+    float probabilities[n];
+    
+    cout << "Enter the keys: ";
     for (int i = 0; i < n; i++) {
         cin >> keys[i];
     }
-
-    cout << "Enter the corresponding access probabilities:\n";
+    cout << "Enter the search probabilities: ";
     for (int i = 0; i < n; i++) {
         cin >> probabilities[i];
     }
-
-    float optimalCost = optimalBST(keys, probabilities);
-    cout << "Optimal cost of the binary search tree: " << optimalCost << endl;
-
+    Node* root = buildBST(keys, probabilities, n);
+    float searchCost = calculateSearchCost(root);
+    cout << "Search Cost: " << searchCost << endl;
+    deleteBST(root);
     return 0;
 }
-
