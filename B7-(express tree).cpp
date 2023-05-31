@@ -73,6 +73,7 @@ void tree::expression(char prefix[])
     }
     top = s.pop();
 }
+
 void tree::display(node *root)
 {
     if (root != NULL)
@@ -82,6 +83,7 @@ void tree::display(node *root)
         display(root->right);
     }
 }
+
 void tree::non_rec_postorder(node *top)
 {
     stack1 s1, s2; 
@@ -107,6 +109,7 @@ void tree::non_rec_postorder(node *top)
         cout << top->data;
     }
 }
+
 void tree::del(node *node)
 {
     if (node == NULL)
@@ -118,6 +121,7 @@ void tree::del(node *node)
     cout <<endl<<"Deleting node : " << node->data<<endl;
     delete node;
 }
+
 int main()
 {
     char expr[20];
